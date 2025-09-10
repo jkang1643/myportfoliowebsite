@@ -249,6 +249,30 @@ export default function JosephKangPortfolio() {
             {/* Subtle overlay for text readability if needed */}
             <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
+          
+          {/* Minimalistic Resume Download Link */}
+          <div className="mt-16 text-center">
+            <a
+              href="/resume.pdf"
+              download="Joseph_Kang_Resume.pdf"
+              className="inline-flex items-center space-x-4 text-gray-700 hover:text-gray-900 transition-colors duration-300 group"
+            >
+              <svg 
+                className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={1.5} 
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+                />
+              </svg>
+              <span className="text-2xl font-medium tracking-wide">Download Resume</span>
+            </a>
+          </div>
         </div>
       </section>
 
