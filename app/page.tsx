@@ -5,6 +5,9 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { HorizontalPanels } from "@/components/horizontal-panels"
+import { IndividualPanelScroller } from "@/components/individual-panel-scroller"
+import { CloudArchitectureContent, MacScreenContent, NightWorkContent, AppIconsContent, iPhoneContent } from "@/components/panel-content"
 
 export default function JosephKangPortfolio() {
   const [isVisible, setIsVisible] = useState(false)
@@ -86,6 +89,99 @@ export default function JosephKangPortfolio() {
     setGlassRotation({ x: 0, y: 0 })
   }
 
+  // Apple-inspired panel data
+  const panels = [
+    {
+      id: "architecture",
+      headline: "Think different. Build better.",
+      subtext: "Joseph Kang - DevOps Engineer & Cloud Architect",
+      background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)",
+      textColor: "#1a1a1a",
+      content: <CloudArchitectureContent glassRotation={glassRotation} onMouseMove={handleMouseMove} onMouseLeave={resetRotation} />,
+    },
+    {
+      id: "intelligence",
+      headline: "Simple solutions. Complex problems.",
+      subtext: "The DevOps engineer who makes the impossible, possible.",
+      background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+      textColor: "#1a1a1a",
+      content: <MacScreenContent />,
+    },
+    {
+      id: "performance",
+      headline: "Every detail matters. Every process counts.",
+      subtext: "Methodical problem-solving with precision and purpose.",
+      background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+      textColor: "#000000",
+      content: <NightWorkContent />,
+    },
+    {
+      id: "ecosystem",
+      headline: "Dream team.",
+      subtext: "Let's work together.",
+      background: "linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%)",
+      textColor: "#1a1a1a",
+      content: <iPhoneContent />,
+    },
+    {
+      id: "compatibility",
+      headline: "I run your production apps.",
+      subtext: "Reliable, scalable, always-on solutions.",
+      background: "linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)",
+      textColor: "#1a1a1a",
+      content: <AppIconsContent />,
+    },
+  ]
+
+  // Individual panel scroller data
+  const individualPanels = [
+    {
+      id: "projects",
+      headline: "Featured Projects",
+      subtext: "DevOps and cloud infrastructure projects showcasing modern engineering practices",
+      background: "#f3f3f3",
+      textColor: "#1a1a1a",
+      image: "/projects.png",
+      imageAlt: "Featured Projects",
+    },
+    {
+      id: "technical-expertise",
+      headline: "Technical Expertise",
+      subtext: "Cloud platforms, container orchestration, and infrastructure as code",
+      background: "#161a23",
+      textColor: "#ffffff",
+      image: "/technical expertise.png",
+      imageAlt: "Technical Expertise",
+    },
+    {
+      id: "technologies",
+      headline: "Technologies",
+      subtext: "Modern tools and frameworks for scalable cloud solutions",
+      background: "#dff3fd",
+      textColor: "#1a1a1a",
+      image: "/technolgoies.png",
+      imageAlt: "Technologies",
+    },
+    {
+      id: "blog",
+      headline: "Blog & Insights",
+      subtext: "Thoughts on DevOps, cloud architecture, and engineering best practices",
+      background: "#DBDBDB",
+      textColor: "#1a1a1a",
+      image: "/blog.jpg",
+      imageAlt: "Blog & Insights",
+    },
+    {
+      id: "contact",
+      headline: "Get In Touch",
+      subtext: "Ready to discuss your next cloud infrastructure project or DevOps transformation?",
+      background: "linear-gradient(to bottom, #0a0f2e 0%, #16205C 100%)",
+      textColor: "#ffffff",
+      image: "/contact.png",
+      imageAlt: "Contact",
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-white">
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
@@ -110,85 +206,48 @@ export default function JosephKangPortfolio() {
         </div>
       </nav>
 
-      <section className="relative h-screen flex items-center justify-center px-6 pt-20">
-        <div
-          className={`text-center space-y-8 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-semibold text-gray-900 leading-tight">Joseph Kang</h1>
-            <p className="text-xl md:text-2xl text-gray-600 font-light">DevOps Engineer & Cloud Architect</p>
+      {/* Apple-inspired horizontal panels */}
+      <HorizontalPanels panels={panels} className="h-screen" />
+
+      {/* Individual Panel Scroller Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-left mb-16">
+            <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6">Get to know me</h2>
+            <p className="text-xl text-gray-600 max-w-3xl">
+              Discover my work, expertise, and insights through these interactive panels
+            </p>
           </div>
+          
+          <IndividualPanelScroller panels={individualPanels} />
+        </div>
+      </section>
 
-          <div
-            className="relative w-64 h-64 mx-auto cursor-pointer group my-12"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={resetRotation}
-          >
-            <div
-              className="w-full h-full transition-transform duration-500 ease-out"
-              style={{
-                transform: `perspective(1000px) rotateX(${glassRotation.x}deg) rotateY(${glassRotation.y}deg)`,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl shadow-2xl border border-slate-300 group-hover:shadow-3xl transition-all duration-500">
-                <div className="absolute inset-3 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-xl backdrop-blur-sm" />
-
-                {/* Cloud infrastructure layers */}
-                <div className="absolute top-4 left-4 right-4 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg shadow-sm flex items-center justify-center">
-                  <div className="text-white text-xs font-medium drop-shadow-sm">Cloud Infrastructure</div>
-                </div>
-
-                {/* Container orchestration layer */}
-                <div className="absolute top-16 left-6 right-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-md shadow-sm flex items-center justify-center">
-                  <div className="text-white text-xs drop-shadow-sm">Kubernetes</div>
-                </div>
-
-                {/* Microservices containers */}
-                <div className="absolute top-26 left-8 w-12 h-4 bg-orange-400 rounded shadow-sm"></div>
-                <div className="absolute top-26 left-22 w-12 h-4 bg-purple-400 rounded shadow-sm"></div>
-                <div className="absolute top-26 right-8 w-12 h-4 bg-pink-400 rounded shadow-sm"></div>
-
-                {/* Data flow connections */}
-                <div className="absolute top-32 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-400"></div>
-                <div className="absolute top-36 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gray-400"></div>
-
-                {/* Database layer */}
-                <div className="absolute bottom-8 left-8 right-8 h-6 bg-gradient-to-r from-red-400 to-rose-500 rounded-md shadow-sm flex items-center justify-center">
-                  <div className="text-white text-xs drop-shadow-sm">Database Layer</div>
-                </div>
-
-                {/* Monitoring indicators */}
-                <div className="absolute top-2 right-2 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <div className="absolute top-2 right-6 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                <div className="absolute top-2 right-10 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-
-                {/* Subtle highlight */}
-                <div className="absolute top-2 left-4 w-8 h-1 bg-white/40 rounded-full blur-sm" />
-              </div>
-            </div>
-
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
-              Cloud Architecture Visualization
-            </div>
+      {/* Apple-Inspired Video Section */}
+      <section className="py-20 px-6 bg-gradient-to-br from-slate-100 to-slate-200">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6">This is Me. This is Joseph Kang.</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              A glimpse into the world of cloud architecture and DevOps engineering
+            </p>
           </div>
-
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Specializing in cloud infrastructure, container orchestration, and DevOps automation. Building scalable,
-            secure, and efficient systems that power modern applications.
-          </p>
-
-          <div className="flex gap-4 justify-center pt-4">
-            <Button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium transition-all duration-200">
-              View Projects
-            </Button>
-            <Button
-              variant="outline"
-              className="px-8 py-3 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-full font-medium transition-all duration-200 bg-transparent"
+          
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl group">
+            <video
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
             >
-              Download Resume
-            </Button>
+              <source src="/Minimalist_Apple_Commercial_Cloud_DevOps.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            
+            {/* Subtle overlay for text readability if needed */}
+            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </div>
       </section>
