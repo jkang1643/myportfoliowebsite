@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 
 interface IndividualPanel {
   id: string
@@ -148,12 +149,23 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
             >
               <div className="text-center space-y-3">
                 {/* Headline */}
-                <h3
-                  className="text-xl md:text-2xl font-semibold leading-tight"
-                  style={{ color: panel.textColor }}
-                >
-                  {panel.headline}
-                </h3>
+                {panel.id === "projects" ? (
+                  <Link href="/projects">
+                    <h3
+                      className="text-xl md:text-2xl font-semibold leading-tight cursor-pointer hover:opacity-80 transition-opacity duration-300"
+                      style={{ color: panel.textColor }}
+                    >
+                      {panel.headline}
+                    </h3>
+                  </Link>
+                ) : (
+                  <h3
+                    className="text-xl md:text-2xl font-semibold leading-tight"
+                    style={{ color: panel.textColor }}
+                  >
+                    {panel.headline}
+                  </h3>
+                )}
 
                 {/* Subtext */}
                 <p

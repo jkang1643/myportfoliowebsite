@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge"
 import { HorizontalPanels } from "@/components/horizontal-panels"
 import { IndividualPanelScroller } from "@/components/individual-panel-scroller"
 import { CloudArchitectureContent, MacScreenContent, NightWorkContent, AppIconsContent, iPhoneContent } from "@/components/panel-content"
+import { projects } from "@/lib/projects-data"
+import { BookOpen } from "lucide-react"
+import Link from "next/link"
 
 export default function JosephKangPortfolio() {
   const [isVisible, setIsVisible] = useState(false)
-  const [activeProject, setActiveProject] = useState(0)
   const [glassRotation, setGlassRotation] = useState({ x: 0, y: 0 })
   const [projectsVisible, setProjectsVisible] = useState(false)
   const [expertiseVisible, setExpertiseVisible] = useState(false)
@@ -48,32 +50,6 @@ export default function JosephKangPortfolio() {
     return () => observer.disconnect()
   }, [])
 
-  const projects = [
-    {
-      title: "Kubernetes Orchestration",
-      description: "Multi-cluster deployment pipeline with automated scaling and monitoring",
-      tech: "K8s, Docker, Helm",
-      category: "DevOps",
-    },
-    {
-      title: "AWS Infrastructure",
-      description: "Serverless architecture with CI/CD pipeline and infrastructure as code",
-      tech: "AWS, Terraform, Lambda",
-      category: "Cloud",
-    },
-    {
-      title: "Monitoring Stack",
-      description: "Complete observability solution with metrics, logs, and distributed tracing",
-      tech: "Prometheus, Grafana, ELK",
-      category: "Monitoring",
-    },
-    {
-      title: "Security Automation",
-      description: "Automated security scanning and compliance monitoring for cloud workloads",
-      tech: "Vault, SAST, DAST",
-      category: "Security",
-    },
-  ]
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -192,9 +168,9 @@ export default function JosephKangPortfolio() {
               <a href="#about" className="text-gray-700 hover:text-gray-900 transition-colors">
                 About
               </a>
-              <a href="#projects" className="text-gray-700 hover:text-gray-900 transition-colors">
+              <Link href="/projects" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Projects
-              </a>
+              </Link>
               <a href="#resume" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Resume
               </a>
@@ -242,7 +218,7 @@ export default function JosephKangPortfolio() {
               playsInline
               preload="metadata"
             >
-              <source src="/Minimalist_Apple_Commercial_Cloud_DevOps.mp4" type="video/mp4" />
+              <source src="/Cinematic_iPad_Resume_Product_Video.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             
@@ -283,7 +259,11 @@ export default function JosephKangPortfolio() {
               projectsVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"
             }`}
           >
-            <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6">Featured Projects</h2>
+            <Link href="/projects">
+              <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6 hover:text-blue-600 transition-colors duration-300 cursor-pointer">
+                Featured Projects
+              </h2>
+            </Link>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               A selection of DevOps and cloud infrastructure projects showcasing modern engineering practices
             </p>
@@ -294,29 +274,66 @@ export default function JosephKangPortfolio() {
               projectsVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"
             }`}
           >
-            {projects.map((project, index) => (
-              <Card
-                key={index}
-                className={`p-8 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 bg-white border border-gray-200 rounded-2xl transform ${
-                  activeProject === index ? "ring-2 ring-blue-500 shadow-lg scale-105" : ""
-                }`}
-                onClick={() => setActiveProject(index)}
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
-                      {project.category}
-                    </Badge>
+            {projects.slice(0, 4).map((project, index) => {
+              const handleCardClick = () => {
+                window.location.href = `/projects/${project.id}`
+              }
+
+              return (
+                <Card
+                  key={project.id}
+                  className="group p-8 cursor-pointer project-card-hover bg-white border border-gray-200 rounded-2xl"
+                  onClick={handleCardClick}
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
+                        {project.category}
+                      </Badge>
+                      {project.featured && (
+                        <Badge className="bg-yellow-500 text-white border-0">
+                          Featured
+                        </Badge>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">{project.description}</p>
+                    <div className="pt-2">
+                      <span className="text-sm font-medium text-gray-500">Tech Stack: </span>
+                      <span className="text-sm text-gray-700">{project.tech.slice(0, 3).join(", ")}{project.tech.length > 3 ? "..." : ""}</span>
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="text-sm text-blue-600 font-medium group-hover:text-blue-700 transition-colors duration-300">
+                        View Details →
+                      </div>
+                      {project.blogUrl && (
+                        <a
+                          href={project.blogUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center space-x-1 text-green-600 hover:text-green-700 transition-colors duration-200"
+                        >
+                          <BookOpen className="w-4 h-4" />
+                          <span className="text-sm font-medium">Blog</span>
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">{project.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{project.description}</p>
-                  <div className="pt-2">
-                    <span className="text-sm font-medium text-gray-500">Tech Stack: </span>
-                    <span className="text-sm text-gray-700">{project.tech}</span>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              )
+            })}
+          </div>
+          
+          {/* View All Projects Button */}
+          <div className="text-center mt-12">
+            <Link href="/projects">
+              <Button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                View All Projects →
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -427,14 +444,16 @@ export default function JosephKangPortfolio() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button className="px-12 py-4 bg-blue-600 hover:bg-blue-700 hover:scale-105 text-white rounded-full font-medium text-lg transition-all duration-300 transform hover:shadow-lg">
-              Get In Touch
-            </Button>
+            <Link href="/projects">
+              <Button className="px-12 py-4 bg-blue-600 hover:bg-blue-700 hover:scale-105 text-white rounded-full font-medium text-lg transition-all duration-300 transform hover:shadow-lg">
+                Explore Projects
+              </Button>
+            </Link>
             <Button
               variant="outline"
               className="px-8 py-4 border-gray-300 text-gray-700 hover:bg-gray-50 hover:scale-105 rounded-full font-medium text-lg transition-all duration-300 bg-transparent transform hover:shadow-md"
             >
-              View LinkedIn →
+              Get In Touch
             </Button>
           </div>
         </div>
