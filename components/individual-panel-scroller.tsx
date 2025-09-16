@@ -33,7 +33,7 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
 
     const container = scrollContainerRef.current
     const scrollLeft = container.scrollLeft
-    const cardWidth = 320 // w-80 = 20rem = 320px
+    const cardWidth = 288 // w-72 = 18rem = 288px
     const newIndex = Math.round(scrollLeft / cardWidth)
 
     if (newIndex !== currentIndex && newIndex >= 0 && newIndex < panels.length) {
@@ -47,7 +47,7 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
 
     setIsScrolling(true)
     const container = scrollContainerRef.current
-    const cardWidth = 320 // w-80 = 20rem = 320px
+    const cardWidth = 288 // w-72 = 18rem = 288px
     const targetScrollLeft = index * cardWidth
 
     container.scrollTo({
@@ -123,7 +123,7 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
       {/* Main scroll container */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 gap-4"
+        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 pt-4 pb-4 gap-8"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -136,7 +136,7 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
         {panels.map((panel, index) => (
           <div
             key={panel.id}
-            className="flex-shrink-0 w-80 md:w-96 lg:w-[28rem] h-[28rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
+            className="flex-shrink-0 w-72 md:w-80 lg:w-96 h-[32rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col group"
             style={{ backgroundColor: panel.background }}
           >
             {/* Text area at the top with matching background */}
