@@ -14,9 +14,9 @@ export const CloudArchitectureContent = ({
 }) => (
   <div className="relative w-64 h-64 mx-auto cursor-pointer group">
     <div
-      className="w-full h-full transition-transform duration-500 ease-out"
+      className="w-full h-full transition-transform duration-500 ease-out transform-3d glass-morphism"
       style={{
-        transform: `perspective(1000px) rotateX(${glassRotation.x}deg) rotateY(${glassRotation.y}deg)`,
+        transform: `perspective(1000px) rotateX(${glassRotation.x}deg) rotateY(${glassRotation.y}deg) translate3d(0, 0, 0)`,
       }}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}

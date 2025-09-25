@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -51,7 +51,7 @@ export default function JosephKangPortfolio() {
   }, [])
 
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
@@ -59,11 +59,11 @@ export default function JosephKangPortfolio() {
     const rotateY = (e.clientX - centerX) / 15
 
     setGlassRotation({ x: rotateX, y: rotateY })
-  }
+  }, [])
 
-  const resetRotation = () => {
+  const resetRotation = useCallback(() => {
     setGlassRotation({ x: 0, y: 0 })
-  }
+  }, [])
 
   // Apple-inspired panel data
   const panels = [
@@ -159,7 +159,7 @@ export default function JosephKangPortfolio() {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white optimize-rendering">
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -217,6 +217,7 @@ export default function JosephKangPortfolio() {
               loop
               playsInline
               preload="metadata"
+              poster="/placeholder.jpg"
             >
               <source src="/Cinematic_iPad_Resume_Product_Video.mp4" type="video/mp4" />
               Your browser does not support the video tag.

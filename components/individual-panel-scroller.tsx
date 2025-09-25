@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -26,23 +26,32 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
   const [isScrolling, setIsScrolling] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollTimeoutRef = useRef<NodeJS.Timeout>()
+  const rafRef = useRef<number>()
 
-  // Handle scroll snap and update current index
-  const handleScroll = () => {
+  // Throttled scroll handler for better performance
+  const handleScroll = useCallback(() => {
     if (!scrollContainerRef.current || isScrolling) return
 
-    const container = scrollContainerRef.current
-    const scrollLeft = container.scrollLeft
-    const cardWidth = 288 // w-72 = 18rem = 288px
-    const newIndex = Math.round(scrollLeft / cardWidth)
-
-    if (newIndex !== currentIndex && newIndex >= 0 && newIndex < panels.length) {
-      setCurrentIndex(newIndex)
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current)
     }
-  }
 
-  // Smooth scroll to specific panel
-  const scrollToPanel = (index: number) => {
+    rafRef.current = requestAnimationFrame(() => {
+      if (!scrollContainerRef.current) return
+
+      const container = scrollContainerRef.current
+      const scrollLeft = container.scrollLeft
+      const cardWidth = 288 // w-72 = 18rem = 288px
+      const newIndex = Math.round(scrollLeft / cardWidth)
+
+      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < panels.length) {
+        setCurrentIndex(newIndex)
+      }
+    })
+  }, [currentIndex, isScrolling, panels.length])
+
+  // Optimized smooth scroll to specific panel
+  const scrollToPanel = useCallback((index: number) => {
     if (!scrollContainerRef.current) return
 
     setIsScrolling(true)
@@ -50,9 +59,14 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
     const cardWidth = 288 // w-72 = 18rem = 288px
     const targetScrollLeft = index * cardWidth
 
-    container.scrollTo({
-      left: targetScrollLeft,
-      behavior: "smooth",
+    // Use requestAnimationFrame for smoother scrolling
+    requestAnimationFrame(() => {
+      if (container) {
+        container.scrollTo({
+          left: targetScrollLeft,
+          behavior: "smooth",
+        })
+      }
     })
 
     // Reset scrolling state after animation
@@ -61,21 +75,21 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
     }
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false)
-    }, 500)
-  }
+    }, 600) // Slightly longer timeout for smoother transitions
+  }, [])
 
-  // Navigation functions
-  const goToPrevious = () => {
+  // Optimized navigation functions
+  const goToPrevious = useCallback(() => {
     const newIndex = currentIndex > 0 ? currentIndex - 1 : panels.length - 1
     scrollToPanel(newIndex)
-  }
+  }, [currentIndex, panels.length, scrollToPanel])
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     const newIndex = currentIndex < panels.length - 1 ? currentIndex + 1 : 0
     scrollToPanel(newIndex)
-  }
+  }, [currentIndex, panels.length, scrollToPanel])
 
-  // Keyboard navigation
+  // Optimized keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -89,22 +103,22 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [currentIndex])
+  }, [goToPrevious, goToNext])
 
-  // Touch/swipe support
+  // Optimized touch/swipe support
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchEnd(null)
     setTouchStart(e.targetTouches[0].clientX)
-  }
+  }, [])
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX)
-  }
+  }, [])
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     if (!touchStart || !touchEnd) return
 
     const distance = touchStart - touchEnd
@@ -116,17 +130,18 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
     } else if (isRightSwipe) {
       goToPrevious()
     }
-  }
+  }, [touchStart, touchEnd, goToNext, goToPrevious])
 
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Main scroll container */}
+      {/* Main scroll container with performance optimizations */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 pt-4 pb-4 gap-8"
+        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 pt-4 pb-4 gap-8 scroll-container"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
         }}
         onScroll={handleScroll}
         onTouchStart={handleTouchStart}
@@ -136,7 +151,7 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
         {panels.map((panel, index) => (
           <div
             key={panel.id}
-            className="flex-shrink-0 w-72 md:w-80 lg:w-96 h-[32rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col group"
+            className="flex-shrink-0 w-72 md:w-80 lg:w-96 h-[32rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col group panel-content"
             style={{ backgroundColor: panel.background }}
           >
             {/* Text area at the top with matching background */}
