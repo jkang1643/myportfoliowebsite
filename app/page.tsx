@@ -73,7 +73,7 @@ export default function JosephKangPortfolio() {
       subtext: "Joseph Kang - DevOps Engineer & Cloud Architect",
       background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)",
       textColor: "#1a1a1a",
-      content: <CloudArchitectureContent glassRotation={glassRotation} onMouseMove={handleMouseMove} onMouseLeave={resetRotation} />,
+      content: <CloudArchitectureContent />,
     },
     {
       id: "intelligence",
