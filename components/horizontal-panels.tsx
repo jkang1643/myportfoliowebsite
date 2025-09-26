@@ -44,7 +44,12 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
       const containerWidth = container.clientWidth
       const newIndex = Math.round(scrollLeft / containerWidth)
 
-      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < panels.length) {
+      // Add tolerance for Mac scroll precision issues
+      const tolerance = 0.1
+      const normalizedScrollLeft = scrollLeft / containerWidth
+      const isAtValidPosition = Math.abs(normalizedScrollLeft - Math.round(normalizedScrollLeft)) < tolerance
+
+      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < panels.length && isAtValidPosition) {
         setCurrentIndex(newIndex)
       }
     })
@@ -69,14 +74,22 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
       }
     })
 
-    // Reset scrolling state after animation
+    // Reset scrolling state after animation with better error handling
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current)
     }
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false)
-    }, 600) // Slightly longer timeout for smoother transitions
-  }, [])
+      // Force update currentIndex if it's out of sync
+      if (scrollContainerRef.current) {
+        const actualScrollLeft = scrollContainerRef.current.scrollLeft
+        const actualIndex = Math.round(actualScrollLeft / containerWidth)
+        if (actualIndex !== currentIndex && actualIndex >= 0 && actualIndex < panels.length) {
+          setCurrentIndex(actualIndex)
+        }
+      }
+    }, 800) // Slightly longer timeout for smoother transitions
+  }, [currentIndex, panels.length])
 
   // Optimized navigation functions
   const goToPrevious = useCallback(() => {
@@ -112,7 +125,10 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
       }
       
       autoTransitionRef.current = setTimeout(() => {
-        goToNext()
+        // Only proceed if we're still auto-transitioning and not currently scrolling
+        if (isAutoTransitioning && !isScrolling) {
+          goToNext()
+        }
       }, 5000) // Increased to 5 seconds for better UX
     }
 
@@ -123,7 +139,21 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
         clearTimeout(autoTransitionRef.current)
       }
     }
-  }, [currentIndex, isAutoTransitioning, goToNext])
+  }, [currentIndex, isAutoTransitioning, isScrolling, goToNext])
+
+  // Fallback mechanism to prevent auto-transition from getting stuck
+  useEffect(() => {
+    const fallbackTimeout = setTimeout(() => {
+      // If we've been on the same panel for too long and auto-transition is enabled,
+      // force a transition to prevent getting stuck
+      if (isAutoTransitioning && !isScrolling) {
+        console.log('Auto-transition fallback triggered')
+        goToNext()
+      }
+    }, 15000) // 15 seconds fallback
+
+    return () => clearTimeout(fallbackTimeout)
+  }, [currentIndex, isAutoTransitioning, isScrolling, goToNext])
 
   // Pause auto-transition on user interaction
   const pauseAutoTransition = () => {
@@ -135,9 +165,15 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
 
   // Resume auto-transition after a delay
   const resumeAutoTransition = useCallback(() => {
-    setTimeout(() => {
+    // Clear any existing resume timeout
+    if (autoTransitionRef.current) {
+      clearTimeout(autoTransitionRef.current)
+    }
+    
+    // Set a new timeout to resume auto-transition
+    autoTransitionRef.current = setTimeout(() => {
       setIsAutoTransitioning(true)
-    }, 6000) // Resume after 6 seconds of inactivity
+    }, 3000) // Resume after 3 seconds of inactivity (reduced from 6)
   }, [])
 
   // Optimized keyboard navigation
@@ -200,6 +236,7 @@ export function HorizontalPanels({ panels, className = "" }: HorizontalPanelsPro
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
+          scrollBehavior: "smooth",
         }}
         onScroll={handleScroll}
         onTouchStart={handleTouchStart}
