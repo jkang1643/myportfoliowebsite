@@ -12,26 +12,26 @@ export const CloudArchitectureContent = () => (
         <div className="absolute inset-3 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-xl backdrop-blur-sm" />
 
         {/* Cloud infrastructure layers */}
-        <div className="absolute top-4 left-4 right-4 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg shadow-sm flex items-center justify-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="absolute top-4 left-4 right-4 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg shadow-sm flex items-center justify-center">
           <div className="text-white text-xs font-medium drop-shadow-sm">Cloud Infrastructure</div>
         </div>
 
         {/* Container orchestration layer */}
-        <div className="absolute top-16 left-6 right-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-md shadow-sm flex items-center justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <div className="absolute top-16 left-6 right-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-md shadow-sm flex items-center justify-center">
           <div className="text-white text-xs drop-shadow-sm">Kubernetes</div>
         </div>
 
         {/* Microservices containers */}
-        <div className="absolute top-26 left-8 w-12 h-4 bg-orange-400 rounded shadow-sm animate-fade-in-up hover:scale-105 transition-transform duration-300" style={{ animationDelay: '0.6s' }}></div>
-        <div className="absolute top-26 left-22 w-12 h-4 bg-purple-400 rounded shadow-sm animate-fade-in-up hover:scale-105 transition-transform duration-300" style={{ animationDelay: '0.8s' }}></div>
-        <div className="absolute top-26 right-8 w-12 h-4 bg-pink-400 rounded shadow-sm animate-fade-in-up hover:scale-105 transition-transform duration-300" style={{ animationDelay: '1.0s' }}></div>
+        <div className="absolute top-26 left-8 w-12 h-4 bg-orange-400 rounded shadow-sm hover:scale-105 transition-transform duration-300"></div>
+        <div className="absolute top-26 left-22 w-12 h-4 bg-purple-400 rounded shadow-sm hover:scale-105 transition-transform duration-300"></div>
+        <div className="absolute top-26 right-8 w-12 h-4 bg-pink-400 rounded shadow-sm hover:scale-105 transition-transform duration-300"></div>
 
         {/* Data flow connections */}
-        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-400 animate-pulse" style={{ animationDelay: '1.2s' }}></div>
-        <div className="absolute top-36 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gray-400 animate-pulse" style={{ animationDelay: '1.4s' }}></div>
+        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gray-400"></div>
+        <div className="absolute top-36 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gray-400"></div>
 
         {/* Database layer */}
-        <div className="absolute bottom-8 left-8 right-8 h-6 bg-gradient-to-r from-red-400 to-rose-500 rounded-md shadow-sm flex items-center justify-center animate-fade-in-up" style={{ animationDelay: '1.6s' }}>
+        <div className="absolute bottom-8 left-8 right-8 h-6 bg-gradient-to-r from-red-400 to-rose-500 rounded-md shadow-sm flex items-center justify-center">
           <div className="text-white text-xs drop-shadow-sm">Database Layer</div>
         </div>
 
