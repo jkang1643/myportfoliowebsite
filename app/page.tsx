@@ -171,6 +171,12 @@ export default function JosephKangPortfolio() {
               <Link href="/projects" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Projects
               </Link>
+              <Link href="/technical-expertise" className="text-gray-700 hover:text-gray-900 transition-colors">
+                Expertise
+              </Link>
+              <Link href="/technologies" className="text-gray-700 hover:text-gray-900 transition-colors">
+                Technologies
+              </Link>
               <a href="#resume" className="text-gray-700 hover:text-gray-900 transition-colors">
                 Resume
               </a>
@@ -228,10 +234,10 @@ export default function JosephKangPortfolio() {
           </div>
           
           {/* Minimalistic Resume Download Link */}
-          <div className="mt-16 text-center">
+          <div id="resume" className="mt-16 text-center">
             <a
-              href="/resume.pdf"
-              download="Joseph_Kang_Resume.pdf"
+              href="/Joseph Kang's Resume 2025.docx.pdf"
+              download="Joseph_Kang_Resume_2025.pdf"
               className="inline-flex items-center space-x-4 text-gray-700 hover:text-gray-900 transition-colors duration-300 group"
             >
               <svg 

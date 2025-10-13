@@ -148,12 +148,27 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {panels.map((panel, index) => (
-          <div
-            key={panel.id}
-            className="flex-shrink-0 w-72 md:w-80 lg:w-96 h-[32rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col group panel-content"
-            style={{ backgroundColor: panel.background }}
-          >
+        {panels.map((panel, index) => {
+          const PanelWrapper = panel.id === "projects" || panel.id === "technical-expertise" || panel.id === "technologies" || panel.id === "blog" || panel.id === "contact" 
+            ? ({ children }: { children: React.ReactNode }) => (
+                <Link href={
+                  panel.id === "projects" ? "/projects" :
+                  panel.id === "technical-expertise" ? "/technical-expertise" :
+                  panel.id === "technologies" ? "/technologies" :
+                  panel.id === "blog" ? "/blog" :
+                  panel.id === "contact" ? "/contact" : "#"
+                }>
+                  {children}
+                </Link>
+              )
+            : ({ children }: { children: React.ReactNode }) => <>{children}</>
+
+          return (
+            <PanelWrapper key={panel.id}>
+              <div
+                className="flex-shrink-0 w-72 md:w-80 lg:w-96 h-[32rem] snap-start relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col group panel-content cursor-pointer"
+                style={{ backgroundColor: panel.background }}
+              >
             {/* Text area at the top with matching background */}
             <div 
               className="flex-shrink-0 p-6"
@@ -164,23 +179,12 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
             >
               <div className="text-center space-y-3">
                 {/* Headline */}
-                {panel.id === "projects" ? (
-                  <Link href="/projects">
-                    <h3
-                      className="text-xl md:text-2xl font-semibold leading-tight cursor-pointer hover:opacity-80 transition-opacity duration-300"
-                      style={{ color: panel.textColor }}
-                    >
-                      {panel.headline}
-                    </h3>
-                  </Link>
-                ) : (
-                  <h3
-                    className="text-xl md:text-2xl font-semibold leading-tight"
-                    style={{ color: panel.textColor }}
-                  >
-                    {panel.headline}
-                  </h3>
-                )}
+                <h3
+                  className="text-xl md:text-2xl font-semibold leading-tight hover:opacity-80 transition-opacity duration-300"
+                  style={{ color: panel.textColor }}
+                >
+                  {panel.headline}
+                </h3>
 
                 {/* Subtext */}
                 <p
@@ -202,8 +206,10 @@ export function IndividualPanelScroller({ panels, className = "" }: IndividualPa
                 priority={index === 0}
               />
             </div>
-          </div>
-        ))}
+              </div>
+            </PanelWrapper>
+          )
+        })}
       </div>
 
       {/* Navigation arrows - hidden on mobile */}
