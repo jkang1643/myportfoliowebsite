@@ -28,7 +28,7 @@ export const projects: Project[] = [
     image: "https://i.ibb.co/CsmyyJqp/articletitle.png",
     heroImage: "https://i.ibb.co/CsmyyJqp/articletitle.png",
     gallery: ["https://i.ibb.co/CsmyyJqp/articletitle.png", "/projects.png", "/technical expertise.png", "/technolgoies.png"],
-    demoUrl: "http://localhost:8080",
+    demoUrl: "http://votingappdemoed.s3-website-us-east-1.amazonaws.com",
     githubUrl: "https://github.com/jkang1643/example-voting-app",
     blogUrl: "https://deploydiaries.vercel.app/blog/deploy-a-microservices-application-on-amazon-eks-using-kubernetes",
     featured: true,
@@ -73,7 +73,7 @@ export const projects: Project[] = [
       "/technical expertise.png", 
       "/technolgoies.png"
     ],
-    demoUrl: "#",
+    demoUrl: "http://votingappdemoed.s3-website-us-east-1.amazonaws.com",
     githubUrl: "https://github.com/jkang1643/example-voting-app",
     blogUrl: "https://deploydiaries.vercel.app/blog/how-to-deploy-a-simple-voting-app-on-aws-ec2-with-docker",
     featured: true,
