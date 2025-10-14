@@ -96,7 +96,7 @@ export const projects: Project[] = [
       "/projects.png", 
       "/technolgoies.png"
     ],
-    demoUrl: "#",
+    demoUrl: "http://learning-app-ecommerce-demoed.s3-website-us-east-1.amazonaws.com/",
     githubUrl: "https://github.com/jkang1643/learning-app-ecommerce",
     blogUrl: "https://deploydiaries.vercel.app/blog/deploying-a-3-tier-e-commerce-application-on-aws-ec2",
     featured: true,
